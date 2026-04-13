@@ -149,7 +149,7 @@ export const EDUCATION = [
 export const SOCIAL_LINKS = [
   { icon: "📧", label: "knegi4394@gmail.com", href: "mailto:knegi4394@gmail.com" },
   { icon: "🐙", label: "github.com/krishnanegi-06", href: "https://github.com/krishnanegi-06" },
-  { icon: "💼", label: "LinkedIn", href: "https://linkedin.com/in/krishna-negi-378801356" },
+  { icon: "💼", label: "LinkedIn", href: "https://www.linkedin.com/in/krishna-negi-378801356/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BywpN8eHUSQCGvvgtSyVPLw%3D%3D" },
 ];
 
 export const ABOUT_INFO = [

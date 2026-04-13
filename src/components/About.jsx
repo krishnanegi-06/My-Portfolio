@@ -49,7 +49,7 @@ const About = memo(function About() {
                   Resume <FiExternalLink size={14} />
                 </motion.a>
                 <motion.a
-                  href="https://linkedin.com/in/krishna-negi-378801356"
+                  href="https://www.linkedin.com/in/krishna-negi-378801356/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BywpN8eHUSQCGvvgtSyVPLw%3D%3D"
                   target="_blank"
                   rel="noreferrer"
                   className="about-link"
