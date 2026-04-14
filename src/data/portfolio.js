@@ -4,7 +4,6 @@
 
 export const ROLES = [
   "Full Stack Developer",
-  "Blockchain Engineer",
   "Problem Solver",
   "CS Student @ GEHU",
   "React Developer",

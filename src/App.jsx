@@ -11,32 +11,36 @@ import Experience from './components/Experience';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 
+// export default function App() {
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     const timer = setTimeout(() => setLoading(false), 2500);
+//     return () => clearTimeout(timer);
+//   }, []);
+
+//   return (
+//     <ThemeProvider>
+//       <AnimatePresence mode="wait">
+//         {loading ? (
+//           <LoadingScreen key="loading" />
+//         ) : (
+//           <div key="app" style={{ minHeight: '100vh' }}>
+//             <Navbar />
+//             <Hero />
+//             <About />
+//             <Projects />
+//             <Skills />
+//             <Experience />
+//             <Contact />
+//             <Footer />
+//           </div>
+//         )}
+//       </AnimatePresence>
+//     </ThemeProvider>
+//   );
+// }
+import Portfolio from "./Portfolio";
 export default function App() {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  return (
-    <ThemeProvider>
-      <AnimatePresence mode="wait">
-        {loading ? (
-          <LoadingScreen key="loading" />
-        ) : (
-          <div key="app" style={{ minHeight: '100vh' }}>
-            <Navbar />
-            <Hero />
-            <About />
-            <Projects />
-            <Skills />
-            <Experience />
-            <Contact />
-            <Footer />
-          </div>
-        )}
-      </AnimatePresence>
-    </ThemeProvider>
-  );
+  return <Portfolio />;
 }
