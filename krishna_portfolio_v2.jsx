@@ -483,7 +483,7 @@ export default function Portfolio() {
               </p>
               <div style={{ display: "flex", gap: 16, marginTop: 28 }}>
                 {[
-                  { l: "Resume", href: "#", col: "#1d9e75" },
+                  { l: "Resume", href: "Krishnanegi (4).pdf", col: "#1d9e75" },
                   { l: "LinkedIn", href: "https://linkedin.com/in/krishna-negi-378801356", col: "#0077b5" },
                 ].map(b => (
                   <a key={b.l} href={b.href} target="_blank" rel="noreferrer" style={{
