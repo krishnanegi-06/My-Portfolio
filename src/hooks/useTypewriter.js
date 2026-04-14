@@ -25,7 +25,6 @@ export function useTypewriter(words) {
       },
       isDeleting ? 35 : 75
     );
-
     return () => clearTimeout(timeout);
   }, [charIndex, isDeleting, wordIndex, words]);
 
