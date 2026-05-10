@@ -44,8 +44,8 @@ const PROJECTS = [
     emoji: "🌱",
     grad: ["#185fa5", "#378add"],
     desc: "AI-assisted smart agriculture system providing data-driven crop analysis and irrigation insights for farmers.",
-    github: "https://github.com/krishnanegi-06",
-    live: "https://github.com/krishnanegi-06", // replace with actual live URL
+    github: "https://github.com/krishnanegi-06/Agrofy_frontend1",
+    live: "https://agrofy-frontend1.vercel.app/", // replace with actual live URL
     points: [
       "Spring Boot backend with weather & irrigation intelligence",
       "Image processing module for real-time crop diagnosis",
