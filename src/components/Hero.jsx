@@ -1,15 +1,12 @@
-import { useState, memo } from "react";
-import { FiGithub, FiLinkedin, FiArrowRight, FiFileText, FiCode, FiTerminal } from "react-icons/fi";
-import { PERSONAL_INFO, CODE_SNIPPETS } from "../data/portfolio";
+import { memo } from "react";
+import { FiGithub, FiLinkedin, FiArrowRight, FiFileText } from "react-icons/fi";
+import { PERSONAL_INFO } from "../data/portfolio";
+import ProfileCard from "./ProfileCard";
 
 const Hero = memo(function Hero() {
-  const [activeTab, setActiveTab] = useState("cpp");
-
   const scrollToProjects = () => {
     document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
   };
-
-  const currentSnippet = CODE_SNIPPETS[activeTab];
 
   return (
     <section id="hero" className="hero-section">
@@ -76,52 +73,9 @@ const Hero = memo(function Hero() {
             </div>
           </div>
 
-          {/* Right Column: Restrained Visual Workbench */}
-          <div>
-            <div className="code-workbench">
-              <div className="code-workbench-header">
-                <div className="window-dots">
-                  <div className="window-dot window-dot-red" />
-                  <div className="window-dot window-dot-yellow" />
-                  <div className="window-dot window-dot-green" />
-                </div>
-
-                <div className="workbench-tabs">
-                  <button
-                    onClick={() => setActiveTab("cpp")}
-                    className={`workbench-tab ${activeTab === "cpp" ? "active" : ""}`}
-                  >
-                    LockManager.cpp
-                  </button>
-                  <button
-                    onClick={() => setActiveTab("typescript")}
-                    className={`workbench-tab ${activeTab === "typescript" ? "active" : ""}`}
-                  >
-                    useProductDetails.ts
-                  </button>
-                  <button
-                    onClick={() => setActiveTab("oop")}
-                    className={`workbench-tab ${activeTab === "oop" ? "active" : ""}`}
-                  >
-                    PaymentGateway.cpp
-                  </button>
-                </div>
-              </div>
-
-              <div className="workbench-body">
-                <pre>
-                  <code>{currentSnippet.code}</code>
-                </pre>
-              </div>
-
-              <div className="workbench-footer">
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                  <FiTerminal size={13} style={{ color: "var(--accent)" }} />
-                  <span>{currentSnippet.filename}</span>
-                </div>
-                <span>Active Code Preview</span>
-              </div>
-            </div>
+          {/* Right Column: Profile Picture Card with Hover Interaction */}
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <ProfileCard />
           </div>
         </div>
       </div>
