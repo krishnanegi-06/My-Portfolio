@@ -1,94 +1,71 @@
-import { memo } from 'react';
-import { motion } from 'framer-motion';
-import { FiExternalLink } from 'react-icons/fi';
-import { ABOUT_INFO } from '../data/portfolio';
-import ScrollReveal from './ScrollReveal';
+import { memo } from "react";
+import { FiCpu, FiLayers, FiCheckCircle, FiGitPullRequest } from "react-icons/fi";
+import { PERSONAL_INFO } from "../data/portfolio";
 
 const About = memo(function About() {
   return (
-    <section id="About" className="section section-alt">
+    <section id="about" className="section section-alt">
       <div className="container">
-        <ScrollReveal>
+        <div className="section-header">
           <div className="section-label">
-            <div className="section-label-line" />
-            <span className="section-label-text">About Me</span>
+            <span className="section-label-bar" />
+            <span>About Me</span>
           </div>
-          <h2 className="section-title">Who I Am</h2>
-        </ScrollReveal>
+          <h2 className="section-title">Engineering Mindset & Background</h2>
+          <p className="section-description">
+            A grounded approach to building reliable software systems, from typed frontend interfaces to systems-level concurrency primitives.
+          </p>
+        </div>
 
         <div className="about-grid">
-          {/* Left — Bio text */}
-          <ScrollReveal delay={0.1}>
-            <div>
-              <p className="about-text">
-                I'm a passionate developer and a proud product of{' '}
-                <span className="about-highlight">Rashtriya Military School, Belgaum</span>{' '}
-                — where I scored 95% in Matriculation and 87% in Intermediate. The discipline
-                from military school shaped my consistency in coding.
-              </p>
-              <p className="about-text">
-                Currently pursuing B.Tech CS at{' '}
-                <span className="about-accent">Graphic Era Hill University, Dehradun</span>{' '}
-                (2024–2028). My focus is on building impactful blockchain + full-stack systems,
-                especially in India's agriculture sector which is ripe for technological
-                disruption.
-              </p>
+          {/* Narrative */}
+          <div className="about-narrative">
+            <p>
+              I am a Computer Science undergraduate at <strong>Graphic Era Hill University</strong>, Dehradun (CGPA: 8.25/10), with foundational roots from <strong>Rashtriya Military School, Belgaum</strong>. My focus is on software engineering that balances real-world usability with clean, maintainable architecture.
+            </p>
+            <p>
+              Rather than treating frameworks as black boxes, I enjoy exploring how systems function beneath the surface. That curiosity led me to build a <strong>Distributed Lock Manager in C++</strong> to implement row-level concurrency control with mutexes and condition variables, as well as a <strong>fintech marketplace for 1Fi</strong> with strictly typed React and TypeScript custom hooks.
+            </p>
+            <p>
+              I believe in practical implementation as the fastest way to master core computer science principles. Whether structuring an object-oriented booking application using SOLID principles or debugging asynchronous state machines, I prioritize code clarity, predictable error handling, and robust design.
+            </p>
+            <p>
+              I am actively seeking software engineering internships and junior developer opportunities where I can contribute to production codebases and continue growing alongside experienced engineering teams.
+            </p>
+          </div>
 
-              <div className="about-links">
-                <motion.a
-                  href="#"
-                  className="about-link"
-                  style={{
-                    background: 'var(--accent-bg)',
-                    color: 'var(--accent)',
-                    borderColor: 'var(--accent-border)',
-                  }}
-                  whileHover={{ y: -2, scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Resume <FiExternalLink size={14} />
-                </motion.a>
-                <motion.a
-                  href="https://www.linkedin.com/in/krishna-negi-378801356/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BywpN8eHUSQCGvvgtSyVPLw%3D%3D"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="about-link"
-                  style={{
-                    background: 'rgba(0, 119, 181, 0.1)',
-                    color: '#0077b5',
-                    borderColor: 'rgba(0, 119, 181, 0.25)',
-                  }}
-                  whileHover={{ y: -2, scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  LinkedIn <FiExternalLink size={14} />
-                </motion.a>
+          {/* Pillars */}
+          <div className="about-pillars">
+            <div className="pillar-card">
+              <div className="pillar-title">
+                <FiCpu className="pillar-icon" size={20} />
+                <span>Systems & Concurrency</span>
               </div>
+              <p className="pillar-desc">
+                Exploring thread synchronization, mutual exclusion, condition variables, and deadlock cycle detection through hands-on C++ implementations.
+              </p>
             </div>
-          </ScrollReveal>
 
-          {/* Right — Info cards */}
-          <ScrollReveal delay={0.2} direction="right">
-            <div className="about-info-list">
-              {ABOUT_INFO.map((item, i) => (
-                <motion.div
-                  key={item.label}
-                  className="about-info-item"
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 + i * 0.08, duration: 0.4 }}
-                  whileHover={{ x: 4, borderColor: 'var(--accent-border)' }}
-                >
-                  <span className="about-info-icon">{item.icon}</span>
-                  <div>
-                    <div className="about-info-label">{item.label}</div>
-                    <div className="about-info-value">{item.value}</div>
-                  </div>
-                </motion.div>
-              ))}
+            <div className="pillar-card">
+              <div className="pillar-title">
+                <FiLayers className="pillar-icon" size={20} />
+                <span>Typed Frontend Architecture</span>
+              </div>
+              <p className="pillar-desc">
+                Building accessible, modular web experiences using React, TypeScript, and Vite with clean separation of UI components and asynchronous service layers.
+              </p>
             </div>
-          </ScrollReveal>
+
+            <div className="pillar-card">
+              <div className="pillar-title">
+                <FiCheckCircle className="pillar-icon" size={20} />
+                <span>Algorithmic Problem Solving</span>
+              </div>
+              <p className="pillar-desc">
+                Solved 250+ data structures and algorithms challenges across LeetCode and GeeksforGeeks to maintain sharp analytical rigor.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>

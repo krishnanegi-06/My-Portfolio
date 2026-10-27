@@ -1,17 +1,46 @@
-import { memo } from 'react';
-import { FiCode } from 'react-icons/fi';
+import { memo } from "react";
+import { FiGithub, FiLinkedin, FiFileText } from "react-icons/fi";
+import { PERSONAL_INFO } from "../data/portfolio";
 
 const Footer = memo(function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="footer">
-      <span className="footer-text">
-        Designed & Built by{' '}
-        <span className="footer-highlight">Krishna Negi</span>
-        {' '}· 2026
-      </span>
-      <span className="footer-text" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-        Made with <FiCode size={14} style={{ color: 'var(--accent)' }} /> React
-      </span>
+      <div className="container footer-inner">
+        <div>
+          <span>© {currentYear} {PERSONAL_INFO.name}. Designed & engineered with React & TypeScript standards.</span>
+        </div>
+
+        <div className="footer-links">
+          <a
+            href={PERSONAL_INFO.github}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="footer-link"
+          >
+            GitHub
+          </a>
+          <span>•</span>
+          <a
+            href={PERSONAL_INFO.linkedin}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="footer-link"
+          >
+            LinkedIn
+          </a>
+          <span>•</span>
+          <a
+            href={PERSONAL_INFO.resumePdf}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="footer-link"
+          >
+            Resume
+          </a>
+        </div>
+      </div>
     </footer>
   );
 });

@@ -1,32 +1,37 @@
-import { memo } from 'react';
-import ScrollReveal from './ScrollReveal';
-import SkillCard from './SkillCard';
-import { SKILLS_DATA } from '../data/portfolio';
+import { memo } from "react";
+import { SKILL_CATEGORIES } from "../data/portfolio";
 
 const Skills = memo(function Skills() {
   return (
-    <section id="Skills" className="section section-alt">
+    <section id="skills" className="section section-alt">
       <div className="container">
-        <ScrollReveal>
+        <div className="section-header">
           <div className="section-label">
-            <div className="section-label-line" />
-            <span className="section-label-text">Skills</span>
+            <span className="section-label-bar" />
+            <span>Technical Skills</span>
           </div>
-          <h2 className="section-title">My Toolkit</h2>
-          <p className="section-desc" style={{ marginBottom: 40 }}>
-            Technologies and tools I use to bring ideas to life.
+          <h2 className="section-title">Core Competencies & Stack</h2>
+          <p className="section-description">
+            Organized strictly by verified coursework, active projects, and practical implementation experience.
           </p>
-        </ScrollReveal>
+        </div>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: 16,
-          }}
-        >
-          {SKILLS_DATA.map((s, i) => (
-            <SkillCard key={s.cat} s={s} index={i} />
+        <div className="skills-grid">
+          {SKILL_CATEGORIES.map((cat) => (
+            <div key={cat.name} className="skill-category-card">
+              <div>
+                <h3 className="skill-category-title">{cat.name}</h3>
+                <p className="skill-category-desc">{cat.description}</p>
+              </div>
+
+              <div className="skill-pills-wrap">
+                {cat.skills.map((skill) => (
+                  <span key={skill} className="skill-pill">
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       </div>

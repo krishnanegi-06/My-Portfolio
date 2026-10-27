@@ -1,149 +1,166 @@
-import { useState, useEffect, memo } from 'react';
-import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
-import { FiMenu, FiX, FiSun, FiMoon } from 'react-icons/fi';
-import { useTheme } from '../hooks/useTheme';
-
-const NAV = ['Home', 'About', 'Projects', 'Skills', 'Experience', 'Resume', 'Contact'];
+import { useState, useEffect, memo } from "react";
+import { FiSun, FiMoon, FiMenu, FiX, FiFileText } from "react-icons/fi";
+import { useTheme } from "../hooks/useTheme";
+import { NAV_LINKS, PERSONAL_INFO } from "../data/portfolio";
 
 const Navbar = memo(function Navbar() {
-  const [activeNav, setActiveNav] = useState('Home');
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("about");
   const { theme, toggleTheme } = useTheme();
 
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
-
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveNav(entry.target.id);
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
         });
       },
-      { rootMargin: '-40% 0px -55% 0px' }
+      { rootMargin: "-35% 0px -45% 0px" }
     );
-    NAV.forEach((id) => {
+
+    NAV_LINKS.forEach((link) => {
+      const id = link.href.replace("#", "");
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
+
     return () => observer.disconnect();
   }, []);
 
-  // FIX: close mobile menu on resize to desktop
+  // Close mobile drawer on resize to desktop
   useEffect(() => {
-    const onResize = () => { if (window.innerWidth > 768) setMobileOpen(false); };
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    const handleResize = () => {
+      if (window.innerWidth > 768) setMobileOpen(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // FIX: prevent body scroll when mobile menu is open
+  // Prevent scroll when mobile menu is open
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [mobileOpen]);
 
-  const scrollTo = (id) => {
+  const scrollTo = (href) => {
     setMobileOpen(false);
-    // FIX: Small timeout lets mobile menu close animation finish before scrolling
-    setTimeout(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 100);
+    const id = href.replace("#", "");
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
-    <>
-      <motion.div className="scroll-progress" style={{ scaleX }} />
+    <nav className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}>
+      <div className="container navbar-container">
+        {/* Brand / Monogram */}
+        <a href="#hero" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="navbar-brand">
+          <div className="monogram">KN</div>
+          <span>{PERSONAL_INFO.name}</span>
+        </a>
 
-      <nav className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
-        <motion.div
-          className="navbar-logo"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => scrollTo('Home')}
-        >
-          <span className="navbar-logo-text">KN</span>
-          <span style={{ color: 'var(--accent)' }}>.</span>
-        </motion.div>
-
-        <div className="navbar-right">
-          {/* Desktop links */}
-          <div className="nav-links">
-            {NAV.map((n) => (
-              <motion.button
-                key={n}
-                onClick={() => scrollTo(n)}
-                className={`nav-link ${activeNav === n ? 'nav-link-active' : ''}`}
-                whileHover={{ y: -1 }}
-                whileTap={{ scale: 0.97 }}
+        {/* Desktop Links */}
+        <div className="nav-links-desktop">
+          {NAV_LINKS.map((link) => {
+            const id = link.href.replace("#", "");
+            const isActive = activeSection === id;
+            return (
+              <a
+                key={link.label}
+                href={link.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollTo(link.href);
+                }}
+                className={`nav-item ${isActive ? "active" : ""}`}
               >
-                {n}
-              </motion.button>
-            ))}
-          </div>
-
-          {/* Theme toggle */}
-          <motion.button
-            className="theme-toggle"
-            onClick={toggleTheme}
-            whileHover={{ scale: 1.1, rotate: 15 }}
-            whileTap={{ scale: 0.9 }}
-            aria-label="Toggle theme"
-          >
-            <motion.div
-              key={theme}
-              initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
-              animate={{ rotate: 0, opacity: 1, scale: 1 }}
-              transition={{ duration: 0.25 }}
-            >
-              {theme === 'dark' ? <FiSun size={16} /> : <FiMoon size={16} />}
-            </motion.div>
-          </motion.button>
-
-          {/* Mobile hamburger */}
-          <motion.button
-            className="mobile-menu-btn"
-            onClick={() => setMobileOpen((m) => !m)}
-            whileTap={{ scale: 0.9 }}
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <FiX size={18} /> : <FiMenu size={18} />}
-          </motion.button>
+                {link.label}
+              </a>
+            );
+          })}
         </div>
-      </nav>
 
-      {/* FIX: Mobile menu - was commented out in original! Now restored + animated */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            className="mobile-menu"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
+        {/* Actions */}
+        <div className="nav-actions">
+          <a
+            href={PERSONAL_INFO.resumePdf}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="btn btn-outline btn-sm"
+            style={{ display: "inline-flex" }}
           >
-            {NAV.map((n, i) => (
-              <motion.button
-                key={n}
-                onClick={() => scrollTo(n)}
-                className={`nav-link ${activeNav === n ? 'nav-link-active' : ''}`}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.04 }}
+            <FiFileText size={14} />
+            <span>Resume</span>
+          </a>
+
+          <button
+            onClick={toggleTheme}
+            className="theme-toggle-btn"
+            aria-label="Toggle visual theme"
+            title={theme === "dark" ? "Switch to Light Theme" : "Switch to Dark Theme"}
+          >
+            {theme === "dark" ? <FiSun size={17} /> : <FiMoon size={17} />}
+          </button>
+
+          <button
+            onClick={() => setMobileOpen((prev) => !prev)}
+            className="mobile-toggle-btn"
+            aria-label="Toggle navigation menu"
+          >
+            {mobileOpen ? <FiX size={20} /> : <FiMenu size={20} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Drawer */}
+      {mobileOpen && (
+        <div className="mobile-nav-overlay">
+          {NAV_LINKS.map((link) => {
+            const id = link.href.replace("#", "");
+            const isActive = activeSection === id;
+            return (
+              <a
+                key={link.label}
+                href={link.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollTo(link.href);
+                }}
+                className={`mobile-nav-link ${isActive ? "active" : ""}`}
               >
-                {n}
-              </motion.button>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+                <span>{link.label}</span>
+                {isActive && <span style={{ color: "var(--accent)" }}>●</span>}
+              </a>
+            );
+          })}
+          <div style={{ marginTop: "auto", display: "flex", gap: "12px", paddingTop: "20px" }}>
+            <a
+              href={PERSONAL_INFO.resumePdf}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="btn btn-primary"
+              style={{ width: "100%" }}
+            >
+              <FiFileText size={16} /> View Resume (PDF)
+            </a>
+          </div>
+        </div>
+      )}
+    </nav>
   );
 });
 

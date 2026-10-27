@@ -1,168 +1,182 @@
-import { useState, memo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FiSend } from 'react-icons/fi';
-import ScrollReveal from './ScrollReveal';
-import { SOCIAL_LINKS } from '../data/portfolio';
+import { useState, memo } from "react";
+import { FiMail, FiGithub, FiLinkedin, FiCopy, FiCheck, FiSend, FiMapPin, FiPhone } from "react-icons/fi";
+import { PERSONAL_INFO } from "../data/portfolio";
 
 const Contact = memo(function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', msg: '' });
-  const [sent, setSent] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    subject: "Software Engineering Opportunity / Collaboration",
+    message: "",
+  });
 
-  const handleChange = (field) => (e) =>
-    setForm((f) => ({ ...f, [field]: e.target.value }));
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(PERSONAL_INFO.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch (e) {
+      // Fallback
+    }
+  };
 
-  const sendMsg = () => {
-    if (!form.name || !form.email || !form.msg) return;
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setSent(true);
-      setForm({ name: '', email: '', msg: '' });
-      setTimeout(() => setSent(false), 4000);
-    }, 1000);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const subjectEncoded = encodeURIComponent(
+      form.subject || `Inquiry from ${form.name || "Portfolio Visitor"}`
+    );
+    const bodyEncoded = encodeURIComponent(
+      `Hi Krishna,\n\n${form.message}\n\nBest regards,\n${form.name || "Sender"}`
+    );
+    window.location.href = `mailto:${PERSONAL_INFO.email}?subject=${subjectEncoded}&body=${bodyEncoded}`;
   };
 
   return (
-    <section id="Contact" className="section section-alt">
-      <div className="container" style={{ maxWidth: 700, margin: '0 auto' }}>
-        <ScrollReveal>
-          <div
-            className="section-label"
-            style={{ justifyContent: 'center' }}
-          >
-            <div className="section-label-line" />
-            <span className="section-label-text">Contact</span>
-            <div className="section-label-line" />
+    <section id="contact" className="section section-alt">
+      <div className="container">
+        <div className="section-header">
+          <div className="section-label">
+            <span className="section-label-bar" />
+            <span>Get in Touch</span>
           </div>
-          <h2 className="section-title" style={{ textAlign: 'center' }}>
-            Let's Build Together
-          </h2>
-          <p
-            className="section-desc"
-            style={{ textAlign: 'center', margin: '0 auto 48px', maxWidth: 500 }}
-          >
-            I'm actively seeking internships and collaborations. Whether you have a project
-            idea, a job opportunity, or just want to say hi — my inbox is always open.
+          <h2 className="section-title">Connect & Collaborate</h2>
+          <p className="section-description">
+            I am currently open to software development internships, junior engineering roles, and technical discussions.
           </p>
-        </ScrollReveal>
+        </div>
 
-        <ScrollReveal delay={0.15}>
-          <div className="contact-form">
-            <AnimatePresence mode="wait">
-              {sent ? (
-                <motion.div
-                  key="success"
-                  className="success-animation"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                >
-                  <div className="success-icon">🚀</div>
-                  <div className="success-title">Message Sent!</div>
-                  <div className="success-text">I'll get back to you very soon.</div>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="form"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  style={{ display: 'flex', flexDirection: 'column', gap: 16 }}
-                >
-                  <div
-                    style={{
-                      display: 'grid',
-                      gridTemplateColumns: '1fr 1fr',
-                      gap: 16,
-                    }}
-                  >
-                    <div>
-                      <label className="form-label">Name</label>
-                      <input
-                        className="input"
-                        value={form.name}
-                        onChange={handleChange('name')}
-                        placeholder="Your full name"
-                      />
-                    </div>
-                    <div>
-                      <label className="form-label">Email</label>
-                      <input
-                        className="input"
-                        value={form.email}
-                        onChange={handleChange('email')}
-                        placeholder="your@email.com"
-                        type="email"
-                      />
-                    </div>
-                  </div>
-
+        <div className="contact-grid">
+          {/* Left Column: Direct Contact Info */}
+          <div className="contact-info-col">
+            <div className="contact-card">
+              <div className="contact-item">
+                <div className="contact-item-left">
+                  <FiMail className="contact-icon" />
                   <div>
-                    <label className="form-label">Message</label>
-                    <textarea
-                      className="textarea input"
-                      rows={5}
-                      value={form.msg}
-                      onChange={handleChange('msg')}
-                      placeholder="Tell me about the opportunity or project..."
-                    />
+                    <div className="contact-label">Email Address</div>
+                    <div className="contact-val">{PERSONAL_INFO.email}</div>
                   </div>
+                </div>
+                <button
+                  onClick={handleCopyEmail}
+                  className="btn btn-outline btn-sm"
+                  title="Copy email to clipboard"
+                  style={{ gap: "4px" }}
+                >
+                  {copied ? <FiCheck size={14} style={{ color: "var(--accent)" }} /> : <FiCopy size={14} />}
+                  <span>{copied ? "Copied" : "Copy"}</span>
+                </button>
+              </div>
 
-                  <motion.button
-                    className="btn btn-primary"
-                    onClick={sendMsg}
-                    disabled={loading}
-                    whileHover={!loading ? { scale: 1.02, y: -2 } : {}}
-                    whileTap={!loading ? { scale: 0.98 } : {}}
-                    style={{
-                      opacity: loading ? 0.7 : 1,
-                      cursor: loading ? 'wait' : 'pointer',
-                    }}
-                  >
-                    {loading ? (
-                      <span
-                        style={{
-                          width: 16,
-                          height: 16,
-                          border: '2px solid rgba(255,255,255,0.3)',
-                          borderTopColor: '#fff',
-                          borderRadius: '50%',
-                          display: 'inline-block',
-                          animation: 'spin 0.8s linear infinite',
-                        }}
-                      />
-                    ) : (
-                      <FiSend size={16} />
-                    )}
-                    {loading ? 'Sending...' : 'Send Message'}
-                  </motion.button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </ScrollReveal>
+              <div className="contact-item">
+                <div className="contact-item-left">
+                  <FiPhone className="contact-icon" />
+                  <div>
+                    <div className="contact-label">Phone</div>
+                    <div className="contact-val">{PERSONAL_INFO.phone}</div>
+                  </div>
+                </div>
+              </div>
 
-        {/* Social links */}
-        <ScrollReveal delay={0.25}>
-          <div className="social-links-row">
-            {SOCIAL_LINKS.map((l) => (
-              <motion.a
-                key={l.label}
-                href={l.href}
-                target="_blank"
-                rel="noreferrer"
-                className="social-link"
-                whileHover={{ y: -3, scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                <span className="social-link-icon">{l.icon}</span>
-                {l.label}
-              </motion.a>
-            ))}
+              <div className="contact-item">
+                <div className="contact-item-left">
+                  <FiMapPin className="contact-icon" />
+                  <div>
+                    <div className="contact-label">Location</div>
+                    <div className="contact-val">{PERSONAL_INFO.location}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="contact-card">
+              <span style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-secondary)" }}>
+                Verified Professional Profiles
+              </span>
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                <a
+                  href={PERSONAL_INFO.github}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="btn btn-outline"
+                  style={{ justifyContent: "flex-start" }}
+                >
+                  <FiGithub size={16} />
+                  <span>GitHub: github.com/krishnanegi-06</span>
+                </a>
+
+                <a
+                  href={PERSONAL_INFO.linkedin}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="btn btn-outline"
+                  style={{ justifyContent: "flex-start" }}
+                >
+                  <FiLinkedin size={16} />
+                  <span>LinkedIn Profile</span>
+                </a>
+              </div>
+            </div>
           </div>
-        </ScrollReveal>
+
+          {/* Right Column: Functional Message Composer */}
+          <div className="contact-form-card">
+            <h3 style={{ fontSize: "18px", marginBottom: "8px" }}>Send a Direct Message</h3>
+            <p style={{ fontSize: "14px", color: "var(--text-muted)", marginBottom: "20px" }}>
+              Composes an authentic message that launches directly into your default email client.
+            </p>
+
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label className="form-label" htmlFor="contact-name">Your Name</label>
+                <input
+                  id="contact-name"
+                  type="text"
+                  required
+                  placeholder="Jane Doe"
+                  className="form-input"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label" htmlFor="contact-subject">Subject</label>
+                <input
+                  id="contact-subject"
+                  type="text"
+                  required
+                  placeholder="Internship opportunity / project discussion"
+                  className="form-input"
+                  value={form.subject}
+                  onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label" htmlFor="contact-message">Message</label>
+                <textarea
+                  id="contact-message"
+                  required
+                  rows={4}
+                  placeholder="Hi Krishna, I'd like to discuss an opportunity..."
+                  className="form-textarea"
+                  value={form.message}
+                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                />
+              </div>
+
+              <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>
+                <FiSend size={15} />
+                <span>Open in Email Client</span>
+              </button>
+
+              <p className="form-notice">
+                ℹ️ Clicking "Open in Email Client" uses your mail provider (Gmail, Outlook, Apple Mail) with all fields pre-filled.
+              </p>
+            </form>
+          </div>
+        </div>
       </div>
     </section>
   );
